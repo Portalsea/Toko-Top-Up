@@ -30,14 +30,15 @@ header {
 
 .namestore {
     display: flex;
-    align-items: end;
-
+    align-items: center;
 }
 .namestore .main-name-store {
     color: var(--text-main);
+    font-weight: 850;
 }
 .namestore .sub-name-store {
-    color: var(--color-accent); 
+    color: var(--color-accent);
+    font-weight: 850;
 }
 
 nav ul {
@@ -90,11 +91,12 @@ nav ul li a {
     text-align: center;
 }
 .banner .banner-img {
+    width: 90%;
     border-radius: 20px;
 }
 
 .progress-container {
-position: absolute;
+    position: absolute;
     bottom: 70px;
     left: 50%;
     transform: translateX(-50%);
@@ -109,17 +111,17 @@ position: absolute;
 .progress-bar {
     width: 10px;
     height: 10px;
-    border-radius: 50%; /* Membuat bentuk lingkaran sempurna */
-    background-color: var(--text-muted); /* Warna titik saat pasif */
+    border-radius: 50%;
+    background-color: var(--text-muted);
     overflow: hidden;
     position: relative;
 }
 .progress-fill {
     width: 100%;
     height: 100%;
-    background-color: var(--color-accent); /* Warna biru muda sesuai coretan gambar */
+    background-color: var(--color-accent);
     border-radius: 50%;
-    opacity: 0; /* Sembunyi secara default */
+    opacity: 0;
     transition: opacity 0.3s ease;
 }
 .fill-1 {
@@ -253,9 +255,8 @@ main {
     padding: 0 20px 40px 20px;
 }
 
-/* Penyesuaian khusus logo saat dipasang di footer */
 .footer-namestore {
-    margin-bottom: 20px; /* Memberi jarak ke deskripsi di bawahnya */
+    margin-bottom: 20px;
 }
 
 .footer-namestore .main-name-store,
@@ -271,7 +272,7 @@ main {
 
 .footer-namestore .sub-name-store {
     color: var(--color-accent);
-    font-weight: 700;
+    font-weight: 800;
 }   
 
 .footer-desc {
@@ -281,7 +282,7 @@ main {
     color: #8c9ba5;
 }
 
-/* Judul Kolom */
+
 .footer-title {
     color: #ffffff;
     font-size: 15px;
@@ -290,7 +291,6 @@ main {
     position: relative;
 }
 
-/* Garis kecil di bawah judul */
 .footer-title::after {
     content: '';
     position: absolute;
@@ -301,7 +301,7 @@ main {
     background-color: var(--color-accent);
 }
 
-/* Daftar Link */
+
 .footer-links {
     list-style: none;
     padding: 0;
@@ -319,7 +319,6 @@ main {
     transition: color 0.2s ease, padding-left 0.2s ease;
 }
 
-/* Efek hover pada link */
 .footer-links a:hover {
     color: var(--color-accent);
     padding-left: 5px;
@@ -361,9 +360,8 @@ main {
     transform: translateY(-3px);
 }
 
-/* Bagian Bawah / Copyright */
 .footer-bottom {
-    background-color: var(--bg-primary);
+    background-color: var(--bg-surface);
     padding: 20px 0;
     text-align: center;
     border-top: 1px solid #161922;
@@ -389,7 +387,6 @@ main {
     }
 
     .banner .banner-img {
-        width: 90%;
         height: auto;
     }
 
@@ -400,9 +397,16 @@ main {
     }
 
     .section-title {
-        font-size: 24px;
+        font-size: 25px;
         margin-bottom: 18px;
     }
+
+    .product-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+        padding: 10px;
+    }
+
 }
 
 /* 2. Handphone / Smartphone (Maksimal 768px) */
@@ -440,28 +444,26 @@ main {
     }
 
     .progress-container {
-        bottom: 30px; /* Menyesuaikan posisi titik indikator di layar kecil */
+        bottom: 30px;
         padding: 4px 10px;
     }
 
-    /* Grid Produk Menyesuaikan HP */
     .product-grid {
-        grid-template-columns: repeat(5, 1fr); /* Otomatis jadi 2 kolom di HP */
+        grid-template-columns: repeat(4, 1fr);
         gap: 12px;
         padding: 10px 0;
     }
 
     .card-img {
-        height: 160px; /* Memperkecil tinggi gambar card agar pas di layar HP */
+        height: 160px;
     }
 
     .name-product {
         font-size: 12px;
     }
 
-    /* Footer Mobile */
     .footer-container {
-        grid-template-columns: 1fr; /* Kolom footer berderet ke bawah 1 baris */
+        grid-template-columns: 1fr;
         gap: 25px;
         padding: 0 15px 30px 15px;
     }
@@ -471,7 +473,6 @@ main {
     }
 }
 
-/* 3. Handphone Berukuran Kecil (Maksimal 480px) */
 @media screen and (max-width: 480px) {
     .namestore .main-name-store {
         font-size: 22px;
@@ -481,7 +482,6 @@ main {
         font-size: 20px;
     }
 
-    /* Jika ingin 1 kolom penuh untuk produk tertentu, atau tetap 2 kolom rapat */
     .product-grid {
     grid-template-columns: repeat(2, 1fr); 
     gap: 20px;
