@@ -28,17 +28,13 @@ header {
     text-align: center;
 }
 
-.namestore {
-    display: flex;
-    align-items: center;
-}
-.namestore .main-name-store {
+.main-name-store {
+    font-size: 35px;
+    font-weight: 800;
     color: var(--text-main);
-    font-weight: 850;
 }
-.namestore .sub-name-store {
+.main-name-store .sub-name-store {
     color: var(--color-accent);
-    font-weight: 850;
 }
 
 nav ul {
