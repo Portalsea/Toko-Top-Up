@@ -111,6 +111,7 @@ nav ul li a {
     background-color: var(--text-muted);
     overflow: hidden;
     position: relative;
+    cursor: pointer;
 }
 .progress-fill {
     width: 100%;
@@ -179,7 +180,7 @@ main {
     cursor: pointer;
 }
 .card:hover {
-    transform: translateY(-4px);
+    transform: translateY(-4px) rotate(2deg);
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
 }
 .card-img {
@@ -203,7 +204,7 @@ main {
     text-align: center;
     font-size: 14px;
     font-weight: 600;
-    color: #ffffff;
+    color: var(--text-main);
     margin: 0;
     white-space: nowrap;
     overflow: hidden;          
@@ -226,8 +227,7 @@ main {
     font-weight: bold;
 }
 .btn-selengkapnya:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
+    transform: scale(1.07);
 }
 /* Main End */
 
