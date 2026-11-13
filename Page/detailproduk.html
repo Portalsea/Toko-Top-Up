@@ -3,19 +3,128 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../style.css" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=search" />
+    <link rel="stylesheet" href="../main.css" />
+    <link rel="stylesheet" href="../CSS/detailproduk.css" />
     <title>YUDACYA - Toko Top Up</title>
 </head>
 <body>
 
-    <!-- Judul Game -->
-    <h1 id="game-title">Memuat Data...</h1>
+    <header>
 
-    <!-- Tambahan elemen untuk banner game -->
-    <div class="detail-banner" style="margin-top: 20px;">
-        <img id="game-banner" src="" alt="Banner Game" style="max-width: 400px; border-radius: 8px;" />
-    </div>
+        <h1 class="main-name-store">YUDA<span class="sub-name-store">CYA</span></h1>
 
+        <nav>
+            <ul>
+                <li><a href="#" class="link-animasi">Beranda</a></li>
+                <li><a href="#" class="link-animasi">Transaksi</a></li>
+                <li><a href="#" class="link-animasi">Rewards</a></li>
+                <li><a href="#" class="link-animasi">Promo</a></li>
+            </ul>
+        </nav>
+        <span class="material-symbols-outlined search">search</span>
+    </header>
+
+<main class="detail-wrapper">
+        
+        <!-- KOLOM KIRI: Info Game & Panduan -->
+        <aside class="detail-sidebar">
+            <div class="game-profile-card">
+                <img id="game-banner" src="" alt="Banner Game" class="game-cover" />
+                <div class="game-meta">
+                    <h1 id="game-title">Memuat Data...</h1>
+                    <span class="badge-official">✔ Resmi & Instan 24 Jam</span>
+                </div>
+            </div>
+
+            <div class="guide-box">
+                <h3>Cara Top Up:</h3>
+                <ol>
+                    <li>Masukkan <strong>User ID</strong> akun game kamu dengan benar.</li>
+                    <li>Pilih nominal item yang ingin dibeli.</li>
+                    <li>Pilih metode pembayaran yang paling nyaman.</li>
+                    <li>Klik <strong>Beli Sekarang</strong> dan selesaikan pembayaran.</li>
+                    <li>Item akan otomatis masuk ke akunmu dalam hitungan detik!</li>
+                </ol>
+            </div>
+        </aside>
+
+        <!-- KOLOM KANAN: Form Transaksi -->
+        <div class="detail-content">
+            
+            <!-- Langkah 1: Input Akun -->
+            <section class="step-card">
+                <div class="step-header">
+                    <span class="step-number">1</span>
+                    <h2>Masukkan Data Akun</h2>
+                </div>
+                <div class="input-row">
+                    <!-- Beri ID pada label dan input User ID -->
+                    <div class="input-field">
+                        <label for="user-id" id="user-id-label">User ID</label>
+                        <input type="text" id="user-id" placeholder="Masukkan ID akun..." required />
+                    </div>
+                    
+                    <!-- Bungkus Server ID dengan ID container agar bisa disembunyikan/ditampilkan -->
+                    <div class="input-field" id="server-id-container">
+                        <label for="server-id" id="server-id-label">Server ID</label>
+                        <input type="text" id="server-id" placeholder="Contoh: 2045" />
+                    </div>
+                </div>
+                <p class="helper-text">*Pastikan User ID sudah sesuai. Kesalahan input bukan tanggung jawab toko.</p>
+            </section>
+
+            <!-- Langkah 2: Pilih Nominal -->
+            <section class="step-card">
+                <div class="step-header">
+                    <span class="step-number">2</span>
+                    <h2>Pilih Nominal Top Up</h2>
+                </div>
+                <!-- Container ini akan otomatis diisi oleh JS -->
+                <div class="nominal-grid" id="nominal-grid"></div>
+            </section>
+
+            <!-- Langkah 3: Pilih Metode Pembayaran -->
+            <section class="step-card">
+                <div class="step-header">
+                    <span class="step-number">3</span>
+                    <h2>Pilih Metode Pembayaran</h2>
+                </div>
+                <div class="payment-list">
+                    <div class="payment-item" data-payment="QRIS">
+                        <span class="pay-name">QRIS (Semua E-Wallet & M-Banking)</span>
+                        <span class="pay-tag">Otomatis</span>
+                    </div>
+                    <div class="payment-item" data-payment="GoPay">
+                        <span class="pay-name">GoPay</span>
+                        <span class="pay-tag">Instan</span>
+                    </div>
+                    <div class="payment-item" data-payment="DANA">
+                        <span class="pay-name">DANA</span>
+                        <span class="pay-tag">Instan</span>
+                    </div>
+                    <div class="payment-item" data-payment="Transfer Bank">
+                        <span class="pay-name">Virtual Account (BCA / Mandiri / BRI)</span>
+                        <span class="pay-tag">Cek Otomatis</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Langkah 4: Konfirmasi & Tombol Beli -->
+            <section class="step-card">
+                <div class="step-header">
+                    <span class="step-number">4</span>
+                    <h2>Detail Kontak & Konfirmasi</h2>
+                </div>
+                <div class="input-field">
+                    <label for="wa-number">Nomor WhatsApp <small>(Untuk bukti transaksi)</small></label>
+                    <input type="tel" id="wa-number" placeholder="Contoh: 081234567890" />
+                </div>
+                <button type="button" id="btn-checkout" class="btn-buy">Beli Sekarang</button>
+            </section>
+
+        </div>
+    </main>
     <!-- Script untuk menangkap dan menampilkan banner -->
     <script src="../JS/detailproduk.js"></script>
 </body>
