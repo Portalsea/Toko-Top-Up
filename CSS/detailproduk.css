@@ -532,9 +532,13 @@ body {
 
 /* Responsif untuk layar HP */
 @media (max-width: 850px) {
-    .detail-wrapper {
+.detail-wrapper {
+        max-width: 100% !important;
+        margin: 15px auto !important;
+        padding: 0 15px !important; /* Membuat lebar dan jarak pinggirnya sejajar dengan header & footer */
         grid-template-columns: 1fr;
     }
+    
     .detail-sidebar {
         position: static;
     }
