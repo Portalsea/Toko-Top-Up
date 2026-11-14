@@ -467,8 +467,21 @@ main {
         padding: 0 15px 30px 15px;
     }
 
-    .site-footer {
+.site-footer {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 40px 0 0 0 !important;
         padding-top: 35px;
+        box-sizing: border-box;
+    }
+
+    .footer-container {
+        width: 100% !important;
+        max-width: 100% !important;
+        grid-template-columns: 1fr !important;
+        gap: 25px;
+        padding: 0 20px 30px 20px !important;
+        box-sizing: border-box;
     }
 }
 
