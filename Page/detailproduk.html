@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=search" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=search" />
     <link rel="stylesheet" href="../main.css" />
     <link rel="stylesheet" href="../CSS/detailproduk.css" />
     <title>YUDACYA - Toko Top Up</title>
@@ -11,12 +11,10 @@
 <body>
 
     <header>
-
         <h1 class="main-name-store">YUDA<span class="sub-name-store">CYA</span></h1>
-
         <nav>
             <ul>
-                <li><a href="#" class="link-animasi">Beranda</a></li>
+                <li><a href="../index.html" class="link-animasi">Beranda</a></li>
                 <li><a href="#" class="link-animasi">Transaksi</a></li>
                 <li><a href="#" class="link-animasi">Rewards</a></li>
                 <li><a href="#" class="link-animasi">Promo</a></li>
@@ -25,9 +23,9 @@
         <span class="material-symbols-outlined search">search</span>
     </header>
 
-<main class="detail-wrapper">
+    <main class="detail-wrapper">
         
-        <!-- KOLOM KIRI: Info Game & Panduan -->
+        <!-- KOLOM KIRI: Info Game & Tombol Modal Panduan -->
         <aside class="detail-sidebar">
             <div class="game-profile-card">
                 <img id="game-banner" src="" alt="Banner Game" class="game-cover" />
@@ -37,10 +35,16 @@
                 </div>
             </div>
 
-            <div class="guide-box">
+            <!-- Tombol Lihat Cara Transaksi (Tanpa teks info yang mengganggu) -->
+            <button type="button" id="btn-open-guide" class="btn-guide-modal">
+                Lihat Cara Transaksi ▾
+            </button>
+
+            <!-- Box Panduan Bawaan (Akan otomatis disembunyikan di HP via CSS) -->
+            <div class="guide-box mobile-hide">
                 <h3>Cara Top Up:</h3>
                 <ol>
-                    <li>Masukkan <strong>User ID</strong> akun game kamu dengan benar.</li>
+                    <li>Masukkan <strong>User ID</strong> dan <strong>Zone/Server ID</strong> akun game kamu dengan benar.</li>
                     <li>Pilih nominal item yang ingin dibeli.</li>
                     <li>Pilih metode pembayaran yang paling nyaman.</li>
                     <li>Klik <strong>Beli Sekarang</strong> dan selesaikan pembayaran.</li>
@@ -58,20 +62,33 @@
                     <span class="step-number">1</span>
                     <h2>Masukkan Data Akun</h2>
                 </div>
+                
                 <div class="input-row">
-                    <!-- Beri ID pada label dan input User ID -->
                     <div class="input-field">
-                        <label for="user-id" id="user-id-label">User ID</label>
-                        <input type="text" id="user-id" placeholder="Masukkan ID akun..." required />
+                        <label for="user-id" id="user-id-label">USER ID</label>
+                        <input type="text" id="user-id" placeholder="Masukkan User ID" required />
                     </div>
                     
-                    <!-- Bungkus Server ID dengan ID container agar bisa disembunyikan/ditampilkan -->
                     <div class="input-field" id="server-id-container">
-                        <label for="server-id" id="server-id-label">Server ID</label>
-                        <input type="text" id="server-id" placeholder="Contoh: 2045" />
+                        <label for="server-id" id="server-id-label">ZONE ID</label>
+                        <input type="text" id="server-id" placeholder="Masukkan Zone ID" />
                     </div>
                 </div>
-                <p class="helper-text">*Pastikan User ID sudah sesuai. Kesalahan input bukan tanggung jawab toko.</p>
+
+                <!-- Panduan Cek ID & Catatan Penting -->
+                <div class="account-guide-info">
+                    <p class="guide-title"><strong>Cara Cek User ID & Zone ID</strong></p>
+                    <p class="guide-desc">Buka game → klik <strong>Profile</strong> di kiri atas. User ID ada di bawah nama karakter kamu. Masukkan User ID dan Zone ID saat top up.</p>
+                    <p class="guide-example"><strong>Contoh:</strong> User ID 12345678 | Zone ID 1234</p>
+                    
+                    <div class="important-notes">
+                        <p><strong>PENTING:</strong></p>
+                        <ul>
+                            <li>Hanya untuk region Indonesia</li>
+                            <li>Pastikan data akun sudah benar. Kesalahan input bukan tanggung jawab toko.</li>
+                        </ul>
+                    </div>
+                </div>
             </section>
 
             <!-- Langkah 2: Pilih Nominal -->
@@ -80,7 +97,6 @@
                     <span class="step-number">2</span>
                     <h2>Pilih Nominal Top Up</h2>
                 </div>
-                <!-- Container ini akan otomatis diisi oleh JS -->
                 <div class="nominal-grid" id="nominal-grid"></div>
             </section>
 
@@ -90,23 +106,93 @@
                     <span class="step-number">3</span>
                     <h2>Pilih Metode Pembayaran</h2>
                 </div>
-                <div class="payment-list">
-                    <div class="payment-item" data-payment="QRIS">
-                        <span class="pay-name">QRIS (Semua E-Wallet & M-Banking)</span>
-                        <span class="pay-tag">Otomatis</span>
+                
+                <div class="payment-categories" id="payment-categories">
+                    
+                    <!-- Kategori 1: QRIS -->
+                    <div class="payment-category">
+                        <div class="category-header" onclick="toggleCategory(this)">
+                            <span>QRIS (Scan & Bayar)</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="category-body">
+                            <div class="payment-item" data-payment="QRIS">
+                                <span class="pay-name">QRIS (Semua E-Wallet & M-Banking)</span>
+                                <span class="pay-tag">Otomatis</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="payment-item" data-payment="GoPay">
-                        <span class="pay-name">GoPay</span>
-                        <span class="pay-tag">Instan</span>
+
+                    <!-- Kategori 2: E-Wallet -->
+                    <div class="payment-category">
+                        <div class="category-header" onclick="toggleCategory(this)">
+                            <span>E-Wallet</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="category-body">
+                            <div class="payment-item" data-payment="GoPay">
+                                <span class="pay-name">GoPay</span>
+                                <span class="pay-tag">Instan</span>
+                            </div>
+                            <div class="payment-item" data-payment="DANA">
+                                <span class="pay-name">DANA</span>
+                                <span class="pay-tag">Instan</span>
+                            </div>
+                            <div class="payment-item" data-payment="OVO">
+                                <span class="pay-name">OVO</span>
+                                <span class="pay-tag">Instan</span>
+                            </div>
+                            <div class="payment-item" data-payment="ShopeePay">
+                                <span class="pay-name">ShopeePay / SPayLater</span>
+                                <span class="pay-tag">Instan</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="payment-item" data-payment="DANA">
-                        <span class="pay-name">DANA</span>
-                        <span class="pay-tag">Instan</span>
+
+                    <!-- Kategori 3: Virtual Account -->
+                    <div class="payment-category">
+                        <div class="category-header" onclick="toggleCategory(this)">
+                            <span>Virtual Account</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="category-body">
+                            <div class="payment-item" data-payment="BCA VA">
+                                <span class="pay-name">BCA Virtual Account</span>
+                                <span class="pay-tag">Cek Otomatis</span>
+                            </div>
+                            <div class="payment-item" data-payment="Mandiri VA">
+                                <span class="pay-name">Mandiri Virtual Account</span>
+                                <span class="pay-tag">Cek Otomatis</span>
+                            </div>
+                            <div class="payment-item" data-payment="BNI VA">
+                                <span class="pay-name">BNI Virtual Account</span>
+                                <span class="pay-tag">Cek Otomatis</span>
+                            </div>
+                            <div class="payment-item" data-payment="BRI VA">
+                                <span class="pay-name">BRI Virtual Account</span>
+                                <span class="pay-tag">Cek Otomatis</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="payment-item" data-payment="Transfer Bank">
-                        <span class="pay-name">Virtual Account (BCA / Mandiri / BRI)</span>
-                        <span class="pay-tag">Cek Otomatis</span>
+
+                    <!-- Kategori 4: Convenience Store -->
+                    <div class="payment-category">
+                        <div class="category-header" onclick="toggleCategory(this)">
+                            <span>Convenience Store</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="category-body">
+                            <div class="payment-item" data-payment="Alfamart">
+                                <span class="pay-name">Alfamart</span>
+                                <span class="pay-tag">Manual / Kasir</span>
+                            </div>
+                            <div class="payment-item" data-payment="Indomaret">
+                                <span class="pay-name">Indomaret</span>
+                                <span class="pay-tag">Manual / Kasir</span>
+                            </div>
+                        </div>
                     </div>
+
                 </div>
             </section>
 
@@ -125,7 +211,31 @@
 
         </div>
     </main>
-    <!-- Script untuk menangkap dan menampilkan banner -->
-    <script src="../JS/detailproduk.js"></script>
+
+    <!-- POPUP MODAL CARA TRANSAKSI -->
+    <div id="guide-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Cara Top Up</h3>
+                <button type="button" id="btn-close-modal" class="modal-close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <ol>
+                    <li>Pilih nominal layanan</li>
+                    <li>Pilih metode pembayaran</li>
+                    <li>Masukkan User ID dan Zone ID</li>
+                    <li>Isi nomor WhatsApp kamu</li>
+                    <li>Klik Beli Sekarang</li>
+                    <li>Selesaikan pembayaran</li>
+                    <li>Diamond otomatis masuk ke akun kamu</li>
+                </ol>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btn-modal-ok" class="modal-ok-btn">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="../JS/detailproduk.js"></script>
 </body>
 </html>

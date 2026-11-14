@@ -1,5 +1,4 @@
 :root {
-    /* 3f51b5 */
     --bg-primary: #03080e;
     --bg-surface: #0F2232;
     --color-accent: #EA2264;
@@ -7,17 +6,16 @@
     --text-muted: #718096;
     --color-secondary: #0EA5E9;
     --border-color: rgba(255, 255, 255, 0.08);
-    --color-success: #10B981; /* Hijau untuk status sukses/lunas */
-    --color-warning: #F59E0B; /* Kuning untuk status pending */
-    --color-error: #EF4444;   /* Merah untuk error/gagal */
+    --color-success: #10B981;
+    --color-warning: #F59E0B;
+    --color-error: #EF4444;
 }
-/* --- PENYESUAIAN WARNA ROOT YUDACYA --- */
+
 body {
     background-color: var(--bg-primary);
     color: var(--text-main);
 }
 
-/* Layout Utama 2 Kolom */
 .detail-wrapper {
     max-width: 1150px;
     margin: 30px auto;
@@ -28,7 +26,6 @@ body {
     align-items: start;
 }
 
-/* --- KOLOM KIRI (Sidebar Info Game) --- */
 .detail-sidebar {
     display: flex;
     flex-direction: column;
@@ -47,10 +44,10 @@ body {
 
 .game-cover {
     width: 100%;
-    height: 180px;
-    object-fit: cover;
-    border-radius: 8px;
-    margin-bottom: 15px;
+    height: auto;
+    object-fit: contain;
+    border-radius: 10px;
+    margin-bottom: 12px;
     background-color: var(--bg-primary);
 }
 
@@ -70,6 +67,29 @@ body {
     font-weight: 600;
 }
 
+/* --- TOMBOL "LIHAT CARA TRANSAKSI" (Disembunyikan di Desktop) --- */
+.btn-guide-modal {
+    display: none;
+    width: 100%;
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+}
+
+.btn-guide-modal:hover {
+    border-color: var(--color-accent);
+    background-color: rgba(234, 34, 100, 0.05);
+}
+
 .guide-box h3 {
     font-size: 1rem;
     margin-bottom: 12px;
@@ -87,7 +107,6 @@ body {
     margin-bottom: 6px;
 }
 
-/* --- KOLOM KANAN (Form Langkah-Langkah) --- */
 .detail-content {
     display: flex;
     flex-direction: column;
@@ -104,7 +123,7 @@ body {
 }
 
 .step-number {
-    background: linear-gradient(135deg, var(--color-accent), var(--color-secondary));
+    background-color: var(--color-accent);
     color: white;
     width: 30px;
     height: 30px;
@@ -122,7 +141,6 @@ body {
     color: var(--text-main);
 }
 
-/* Input User ID & Server */
 .input-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -155,10 +173,53 @@ body {
     border-color: var(--color-accent);
 }
 
-.helper-text {
+/* --- STYLING INFORMASI CARA CEK ID --- */
+.account-guide-info {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid var(--border-color);
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+
+.account-guide-info .guide-title {
+    color: var(--text-main);
+    margin-bottom: 4px;
+}
+
+.account-guide-info .guide-desc {
+    margin-bottom: 6px;
+}
+
+.account-guide-info .guide-example {
+    color: var(--color-secondary);
+    margin-bottom: 12px;
+}
+
+.important-notes {
+    background-color: rgba(234, 34, 100, 0.05);
+    border-left: 3px solid var(--color-accent);
+    padding: 10px 12px;
+    border-radius: 6px;
+    color: var(--text-main);
+}
+
+.important-notes p {
+    margin: 0 0 4px 0;
+    font-size: 0.82rem;
+    font-weight: 600;
+}
+
+.important-notes ul {
+    margin: 0;
+    padding-left: 16px;
     font-size: 0.8rem;
     color: var(--text-muted);
-    margin-top: 10px;
+}
+
+.important-notes li {
+    margin-bottom: 2px;
 }
 
 /* --- GRID NOMINAL TOP UP --- */
@@ -169,6 +230,8 @@ body {
 }
 
 .nominal-card {
+    position: relative;
+    overflow: hidden;
     background-color: var(--bg-primary);
     border: 2px solid var(--border-color);
     border-radius: 10px;
@@ -182,7 +245,6 @@ body {
     transform: translateY(-2px);
 }
 
-/* Efek saat kartu nominal dipilih */
 .nominal-card.selected {
     border-color: var(--color-accent);
     background-color: rgba(234, 34, 100, 0.1);
@@ -195,28 +257,121 @@ body {
     color: var(--text-main);
 }
 
-.nominal-card p {
+.discount-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: var(--color-accent);
+    color: #ffffff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-bottom-left-radius: 8px;
+    letter-spacing: 0.5px;
+}
+
+.price-container {
+    display: flex;
+    gap: 5px;
+    margin-top: 4px;
+    align-items: baseline;
+    flex-wrap: nowrap;
+    overflow: hidden;
+}
+
+.normal-price-text {
     margin: 0;
     font-size: 0.88rem;
-    color: var(--color-secondary);
+    color: var(--color-secondary) !important;
     font-weight: 600;
 }
 
+.price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    flex-wrap: nowrap;
+    overflow: hidden;
+}
+
+.original-price {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+    text-decoration: line-through;
+}
+
+.promo-price {
+    font-size: 0.85rem;
+    font-weight: 700;
+    white-space: nowrap;
+    color: var(--color-secondary);
+}
+
 /* --- METODE PEMBAYARAN --- */
-.payment-list {
+.payment-categories {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
+}
+
+.payment-category {
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+}
+
+.payment-category:hover {
+    border-color: var(--color-accent);
+}
+
+.category-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 18px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--text-main);
+    background-color: var(--bg-primary);
+    user-select: none;
+}
+
+.category-header .arrow {
+    font-size: 0.8rem;
+    transition: transform 0.3s ease;
+    color: var(--text-muted);
+}
+
+.category-body {
+    display: none;
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px 14px 14px 14px;
+    border-top: 1px solid var(--border-color);
+    background-color: rgba(0, 0, 0, 0.15);
+}
+
+.payment-category.active .category-body {
+    display: flex;
+}
+
+.payment-category.active .arrow {
+    transform: rotate(180deg);
+    color: var(--color-accent);
 }
 
 .payment-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: var(--bg-primary);
-    border: 2px solid var(--border-color);
-    padding: 14px 18px;
-    border-radius: 10px;
+    background-color: var(--bg-surface);
+    border: 1.5px solid var(--border-color);
+    padding: 12px 16px;
+    border-radius: 8px;
     cursor: pointer;
     transition: all 0.2s;
 }
@@ -227,30 +382,29 @@ body {
 
 .payment-item.selected {
     border-color: var(--color-accent);
-    background-color: rgba(234, 34, 100, 0.1);
+    background-color: rgba(234, 34, 100, 0.12);
 }
 
 .pay-name {
     font-weight: 500;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     color: var(--text-main);
 }
 
 .pay-tag {
-    font-size: 0.78rem;
-    background-color: var(--bg-surface);
+    font-size: 0.75rem;
+    background-color: var(--bg-primary);
     color: var(--color-secondary);
-    padding: 4px 8px;
+    padding: 3px 8px;
     border-radius: 6px;
     border: 1px solid var(--border-color);
 }
 
-/* --- TOMBOL BELI SEKARANG --- */
 .btn-buy {
     width: 100%;
     margin-top: 18px;
     padding: 15px;
-    background: linear-gradient(135deg, var(--color-accent), var(--color-secondary));
+    background-color: var(--color-accent);
     color: white;
     border: none;
     border-radius: 10px;
@@ -268,6 +422,114 @@ body {
     transform: scale(0.99);
 }
 
+/* --- STYLING POPUP MODAL --- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.modal-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    width: 90%;
+    max-width: 420px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    transform: scale(0.95);
+    transition: transform 0.3s ease;
+}
+
+.modal-overlay.show .modal-content {
+    transform: scale(1);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: var(--text-main);
+}
+
+.modal-close-btn {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.modal-close-btn:hover {
+    color: var(--color-accent);
+}
+
+.modal-body {
+    padding: 20px;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.modal-body ol {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.modal-body li {
+    margin-bottom: 8px;
+    color: var(--text-main);
+}
+
+.modal-footer {
+    padding: 12px 20px;
+    background-color: var(--bg-primary);
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: center;
+}
+
+.modal-ok-btn {
+    width: 100%;
+    background-color: var(--color-accent);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 0.95rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.modal-ok-btn:hover {
+    opacity: 0.9;
+}
+
 /* Responsif untuk layar HP */
 @media (max-width: 850px) {
     .detail-wrapper {
@@ -278,5 +540,55 @@ body {
     }
     .input-row {
         grid-template-columns: 1fr;
+    }
+
+    /* Munculkan tombol popup dan sembunyikan box panduan panjang di HP */
+    .btn-guide-modal {
+        display: flex;
+    }
+
+    .mobile-hide {
+        display: none !important;
+    }
+
+    .nominal-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .nominal-card {
+        padding: 12px;
+    }
+
+    .nominal-card h4 {
+        font-size: 0.85rem;
+    }
+
+    .price-row {
+        gap: 4px;
+        flex-wrap: wrap;
+    }
+
+    .promo-price {
+        font-size: 0.8rem;
+    }
+
+    .original-price {
+        font-size: 0.65rem;
+    }
+
+    .payment-item {
+        padding: 10px 12px;
+        gap: 10px;
+    }
+
+    .pay-name {
+        font-size: 0.82rem;
+    }
+
+    .pay-tag {
+        white-space: nowrap;
+        flex-shrink: 0;
+        font-size: 0.72rem;
     }
 }

@@ -1,3 +1,5 @@
+import { databaseGame, adminFees } from "./database.js";
+
 // 1. Menangkap semua card produk di halaman utama (index.html)
 document.querySelectorAll(".card").forEach((card) => {
     card.addEventListener("click", () => {
@@ -12,65 +14,7 @@ document.querySelectorAll(".card").forEach((card) => {
 const urlParams = new URLSearchParams(window.location.search);
 const gameKey = urlParams.get("game");
 
-// 3. Database informasi game (Lengkap dengan data input dan nominalnya)
-const databaseGame = {
-    valorant: {
-        title: "Valorant Points",
-        developer: "Riot Games",
-        banner: "../IMG/Asset/Valorant.webp",
-        userIdLabel: "Riot ID",
-        userIdPlaceholder: "Contoh: Nama#TAG",
-        showServerId: false, // Valorant tidak butuh server ID
-        nominals: [
-        { name: "125 VP", price: "Rp 15.000" },
-        { name: "420 VP", price: "Rp 45.000" },
-        { name: "700 VP", price: "Rp 75.000" },
-        { name: "1375 VP", price: "Rp 145.000" },
-        ],
-    },
-    "mobile-legends": {
-        title: "Mobile Legends Diamonds",
-        developer: "Moonton",
-        banner: "../IMG/Asset/mobilelegends.webp",
-        userIdLabel: "User ID",
-        userIdPlaceholder: "Contoh: 12345678",
-        showServerId: true, // Mobile Legends butuh server ID
-        nominals: [
-        { name: "50 Diamonds", price: "Rp 12.000" },
-        { name: "100 Diamonds", price: "Rp 23.000" },
-        { name: "250 Diamonds", price: "Rp 55.000" },
-        { name: "500 Diamonds", price: "Rp 110.000" },
-        ],
-    },
-    "honor-of-kings": {
-        title: "Honor of Kings Tokens",
-        developer: "Level Infinite",
-        banner: "../IMG/Asset/HOK.webp",
-        userIdLabel: "User ID",
-        userIdPlaceholder: "Contoh: 12345678",
-        showServerId: false,
-        nominals: [
-        { name: "80 Tokens", price: "Rp 15.000" },
-        { name: "240 Tokens", price: "Rp 45.000" },
-        { name: "400 Tokens", price: "Rp 75.000" },
-        ],
-    },
-    "free-fire": {
-        title: "Free Fire Diamonds",
-        developer: "Garena",
-        banner: "../IMG/Asset/FreeFire.webp",
-        userIdLabel: "Player ID",
-        userIdPlaceholder: "Contoh: 123456789",
-        showServerId: false,
-        nominals: [
-        { name: "70 Diamonds", price: "Rp 10.000" },
-        { name: "140 Diamonds", price: "Rp 20.000" },
-        { name: "355 Diamonds", price: "Rp 50.000" },
-        ],
-    },
-};
-
-// 4. Tangkap elemen-elemen penting di HTML halaman detail
+// 3. Tangkap elemen-elemen penting di HTML halaman detail
 const titleElement = document.getElementById("game-title");
 const bannerImg = document.getElementById("game-banner");
 const nominalGrid = document.getElementById("nominal-grid");
@@ -78,23 +22,61 @@ const userIdLabel = document.getElementById("user-id-label");
 const userIdInput = document.getElementById("user-id");
 const serverIdContainer = document.getElementById("server-id-container");
 
-// 5. Eksekusi perubahan data jika game ditemukan di database
+// Helper: Mengubah string harga "Rp 15.000" menjadi angka murni
+function parsePrice(priceStr) {
+    if (!priceStr) return 0;
+    return parseInt(priceStr.replace(/[^0-9]/g, "")) || 0;
+}
+
+// Helper: Format angka kembali ke format Rupiah (contoh: Rp 15.000)
+function formatRupiah(number) {
+    return "Rp " + number.toLocaleString("id-ID");
+}
+
+// Simpan teks default awal badge pembayaran (misal: "Instan", "Cek Otomatis")
+document.querySelectorAll(".payment-item").forEach((item) => {
+    const tagElement = item.querySelector(".pay-tag");
+    if (tagElement) {
+        item.setAttribute("data-default-text", tagElement.innerText);
+    }
+});
+
+// Fungsi untuk memperbarui harga di semua metode pembayaran secara dinamis
+function updatePaymentPrices(basePrice) {
+    document.querySelectorAll(".payment-item").forEach((item) => {
+        const paymentName = item.getAttribute("data-payment");
+        const tagElement = item.querySelector(".pay-tag");
+
+        if (tagElement) {
+        if (basePrice <= 0) {
+            tagElement.innerText =
+            item.getAttribute("data-default-text") || "Pilih Nominal";
+        } else {
+            const fee = adminFees[paymentName] || 0;
+            const totalPrice = basePrice + fee;
+            tagElement.innerText = formatRupiah(totalPrice);
+        }
+        }
+    });
+}
+
+// 4. Eksekusi perubahan data jika game ditemukan di database
 if (gameKey && databaseGame[gameKey]) {
-const data = databaseGame[gameKey];
+    const data = databaseGame[gameKey];
 
-  // Ubah teks judul & banner
-if (titleElement) titleElement.innerText = `Top Up ${data.title}`;
-if (bannerImg && data.banner) bannerImg.src = data.banner;
+    // Ubah teks judul & banner
+    if (titleElement) titleElement.innerText = `Top Up ${data.title}`;
+    if (bannerImg && data.banner) bannerImg.src = data.banner;
 
-  // Ubah Label dan Placeholder User ID secara dinamis
-if (userIdLabel && data.userIdLabel) {
-    userIdLabel.innerText = data.userIdLabel;
-}
-if (userIdInput && data.userIdPlaceholder) {
-    userIdInput.placeholder = data.userIdPlaceholder;
-}
+    // Ubah Label dan Placeholder User ID secara dinamis
+    if (userIdLabel && data.userIdLabel) {
+        userIdLabel.innerText = data.userIdLabel;
+    }
+    if (userIdInput && data.userIdPlaceholder) {
+        userIdInput.placeholder = data.userIdPlaceholder;
+    }
 
-  // Atur tampil / sembunyinya Server ID
+    // Atur tampil / sembunyinya Server ID
     if (serverIdContainer) {
         if (data.showServerId) {
         serverIdContainer.style.display = "flex";
@@ -103,35 +85,62 @@ if (userIdInput && data.userIdPlaceholder) {
         }
     }
 
-  // Render pilihan nominal secara dinamis
-if (nominalGrid && data.nominals) {
-    nominalGrid.innerHTML = ""; // Bersihkan kontainer
-    data.nominals.forEach((item) => {
-        const card = document.createElement("div");
-        card.className = "nominal-card";
-        card.innerHTML = `
-                    <h4>${item.name}</h4>
-                    <p>${item.price}</p>
+// Render pilihan nominal secara dinamis (DENGAN BADGE DISKON OTOMATIS)
+    if (nominalGrid && data.nominals) {
+        nominalGrid.innerHTML = ""; // Bersihkan kontainer
+        data.nominals.forEach((item) => {
+            const card = document.createElement("div");
+            card.className = "nominal-card";
+
+            let badgeHtml = "";
+            let priceHtml = `<p>${item.price}</p>`;
+
+            // Cek jika item memiliki harga asli (sedang promo/diskon)
+            if (item.originalPrice) {
+                const origNum = parsePrice(item.originalPrice);
+                const promoNum = parsePrice(item.price);
+                
+                // Hitung persentase diskon secara otomatis
+                let discountText = "PROMO";
+                if (origNum > promoNum) {
+                    const discountPercent = Math.round(((origNum - promoNum) / origNum) * 100);
+                    discountText = `-${discountPercent}%`; // Hasilnya misal: "-20%"
+                }
+
+                badgeHtml = `<span class="discount-badge">${discountText}</span>`;
+                priceHtml = `
+                    <span class="promo-price">${item.price}</span>
+                    <span class="original-price">${item.originalPrice}</span>
                 `;
+            }
 
-        // Efek interaktif saat nominal diklik
-        card.addEventListener("click", () => {
-            document
-            .querySelectorAll(".nominal-card")
-            .forEach((c) => c.classList.remove("selected"));
-            card.classList.add("selected");
-        });
+            card.innerHTML = `
+                ${badgeHtml}
+                <h4>${item.name}</h4>
+                <div class="price-container">
+                    ${priceHtml}
+                </div>
+            `;
 
-        nominalGrid.appendChild(card);
+            // Efek interaktif saat nominal diklik & update harga dinamis pembayaran
+            card.addEventListener("click", () => {
+                document.querySelectorAll(".nominal-card").forEach((c) => c.classList.remove("selected"));
+                card.classList.add("selected");
+
+                const rawPrice = parsePrice(item.price);
+                updatePaymentPrices(rawPrice);
+            });
+
+            nominalGrid.appendChild(card);
         });
-}
+    }
 } else {
-if (titleElement) {
-    titleElement.innerText = "Game Tidak Ditemukan";
-}
+    if (titleElement) {
+        titleElement.innerText = "Game Tidak Ditemukan";
+    }
 }
 
-// 6. Interaksi pilih metode pembayaran
+// 5. Interaksi pilih metode pembayaran
 document.querySelectorAll(".payment-item").forEach((item) => {
     item.addEventListener("click", () => {
         document
@@ -141,7 +150,7 @@ document.querySelectorAll(".payment-item").forEach((item) => {
     });
 });
 
-// 7. Validasi saat tombol "Beli Sekarang" diklik
+// 6. Validasi saat tombol "Beli Sekarang" diklik
 const btnCheckout = document.getElementById("btn-checkout");
 if (btnCheckout) {
     btnCheckout.addEventListener("click", () => {
@@ -163,15 +172,62 @@ if (btnCheckout) {
         }
 
         const itemName = selectedNominal.querySelector("h4").innerText;
-        const itemPrice = selectedNominal.querySelector("p").innerText;
+
+        // Ambil teks harga promo (elemen .promo-price jika ada, atau tag p biasa)
+        const promoPriceElem =
+        selectedNominal.querySelector(".promo-price") ||
+        selectedNominal.querySelector("p");
+        const basePriceStr = promoPriceElem ? promoPriceElem.innerText : "0";
+
         const paymentMethod = selectedPayment.getAttribute("data-payment");
+
+        // Hitung total harga akhir (Harga Promo + Biaya Admin)
+        const basePrice = parsePrice(basePriceStr);
+        const fee = adminFees[paymentMethod] || 0;
+        const finalPrice = basePrice + fee;
 
         alert(
         `✅ Pesanan Berhasil Dibuat!\n\n` +
             `User ID: ${userId}\n` +
-            `Item: ${itemName} (${itemPrice})\n` +
+            `Item: ${itemName} (${formatRupiah(finalPrice)} incl. Admin)\n` +
             `Pembayaran: ${paymentMethod}\n\n` +
             `Silakan lanjutkan pembayaran.`,
         );
     });
 }
+
+// 7. Fungsi untuk membuka/menutup kategori pembayaran (Accordion)
+window.toggleCategory = function (headerElement) {
+    const parentCategory = headerElement.parentElement;
+    parentCategory.classList.toggle("active");
+};
+
+// --- LOGIKA POPUP MODAL CARA TRANSAKSI ---
+const modal = document.getElementById("guide-modal");
+const btnOpenModal = document.getElementById("btn-open-guide");
+const btnCloseModal = document.getElementById("btn-close-modal");
+const btnModalOk = document.getElementById("btn-modal-ok");
+
+if (btnOpenModal && modal) {
+    btnOpenModal.addEventListener("click", () => {
+        modal.classList.add("show");
+    });
+}
+
+if (btnCloseModal && modal) {
+    btnCloseModal.addEventListener("click", () => {
+        modal.classList.remove("show");
+    });
+}
+
+if (btnModalOk && modal) {
+    btnModalOk.addEventListener("click", () => {
+        modal.classList.remove("show");
+    });
+}
+
+window.addEventListener("click", (event) => {
+    if (event.target === modal) {
+        modal.classList.remove("show");
+    }
+});
