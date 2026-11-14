@@ -21,6 +21,9 @@ const nominalGrid = document.getElementById("nominal-grid");
 const userIdLabel = document.getElementById("user-id-label");
 const userIdInput = document.getElementById("user-id");
 const serverIdContainer = document.getElementById("server-id-container");
+const serverIdLabel = document.getElementById("server-id-label");
+const serverIdInput = document.getElementById("server-id");
+let userIdFormat = "numeric";
 
 // Helper: Mengubah string harga "Rp 15.000" menjadi angka murni
 function parsePrice(priceStr) {
@@ -31,6 +34,42 @@ function parsePrice(priceStr) {
 // Helper: Format angka kembali ke format Rupiah (contoh: Rp 15.000)
 function formatRupiah(number) {
     return "Rp " + number.toLocaleString("id-ID");
+}
+
+function configureIdInput(input, format = "numeric") {
+    if (!input) return;
+
+    input.inputMode = format === "numeric" ? "numeric" : "text";
+    if (format !== "numeric") {
+        input.removeAttribute("pattern");
+        return;
+    }
+
+    input.pattern = "[0-9]*";
+    input.addEventListener("input", (event) => {
+        const target = event.currentTarget;
+        const cursorPosition = target.selectionStart ?? target.value.length;
+        const digitsBeforeCursor = target.value
+            .slice(0, cursorPosition)
+            .replace(/\D/g, "").length;
+        const numericValue = target.value.replace(/\D/g, "");
+
+        if (target.value !== numericValue) {
+            target.value = numericValue;
+            target.setSelectionRange(digitsBeforeCursor, digitsBeforeCursor);
+        }
+    });
+}
+
+// Helper: Menghitung besar biaya admin berdasarkan tipe (percent / flat)
+function calculateAdminFee(basePrice, paymentName) {
+    const feeConfig = adminFees[paymentName];
+    if (!feeConfig) return 0;
+
+    if (feeConfig.type === "percent") {
+        return Math.ceil((basePrice * feeConfig.value) / 100);
+    }
+    return feeConfig.value;
 }
 
 // Simpan teks default awal badge pembayaran (misal: "Instan", "Cek Otomatis")
@@ -52,7 +91,7 @@ function updatePaymentPrices(basePrice) {
             tagElement.innerText =
             item.getAttribute("data-default-text") || "Pilih Nominal";
         } else {
-            const fee = adminFees[paymentName] || 0;
+            const fee = calculateAdminFee(basePrice, paymentName);
             const totalPrice = basePrice + fee;
             tagElement.innerText = formatRupiah(totalPrice);
         }
@@ -63,6 +102,7 @@ function updatePaymentPrices(basePrice) {
 // 4. Eksekusi perubahan data jika game ditemukan di database
 if (gameKey && databaseGame[gameKey]) {
     const data = databaseGame[gameKey];
+    userIdFormat = data.userIdFormat || "numeric";
 
     // Ubah teks judul & banner
     if (titleElement) titleElement.innerText = `Top Up ${data.title}`;
@@ -75,17 +115,25 @@ if (gameKey && databaseGame[gameKey]) {
     if (userIdInput && data.userIdPlaceholder) {
         userIdInput.placeholder = data.userIdPlaceholder;
     }
+    configureIdInput(userIdInput, userIdFormat);
 
     // Atur tampil / sembunyinya Server ID
+    if (serverIdLabel && data.serverIdLabel) {
+        serverIdLabel.innerText = data.serverIdLabel;
+    }
+    if (serverIdInput && data.serverIdPlaceholder) {
+        serverIdInput.placeholder = data.serverIdPlaceholder;
+    }
+    configureIdInput(serverIdInput, data.serverIdFormat || "numeric");
     if (serverIdContainer) {
         if (data.showServerId) {
-        serverIdContainer.style.display = "flex";
+            serverIdContainer.style.display = "flex";
         } else {
-        serverIdContainer.style.display = "none";
+            serverIdContainer.style.display = "none";
         }
     }
 
-// Render pilihan nominal secara dinamis (DENGAN BADGE DISKON OTOMATIS)
+  // Render pilihan nominal secara dinamis (DENGAN BADGE DISKON OTOMATIS)
     if (nominalGrid && data.nominals) {
         nominalGrid.innerHTML = ""; // Bersihkan kontainer
         data.nominals.forEach((item) => {
@@ -95,36 +143,40 @@ if (gameKey && databaseGame[gameKey]) {
             let badgeHtml = "";
             let priceHtml = `<p class="normal-price-text">${item.price}</p>`;
 
-            // Cek jika item memiliki harga asli (sedang promo/diskon)
+        // Cek jika item memiliki harga asli (sedang promo/diskon)
             if (item.originalPrice) {
                 const origNum = parsePrice(item.originalPrice);
                 const promoNum = parsePrice(item.price);
-                
+
                 // Hitung persentase diskon secara otomatis
                 let discountText = "PROMO";
                 if (origNum > promoNum) {
-                    const discountPercent = Math.round(((origNum - promoNum) / origNum) * 100);
-                    discountText = `-${discountPercent}%`; // Hasilnya misal: "-20%"
+                const discountPercent = Math.round(
+                    ((origNum - promoNum) / origNum) * 100,
+                );
+                discountText = `-${discountPercent}%`; // Hasilnya misal: "-20%"
                 }
 
                 badgeHtml = `<span class="discount-badge">${discountText}</span>`;
                 priceHtml = `
-                    <span class="promo-price">${item.price}</span>
-                    <span class="original-price">${item.originalPrice}</span>
-                `;
+                            <span class="promo-price">${item.price}</span>
+                            <span class="original-price">${item.originalPrice}</span>
+                        `;
             }
 
             card.innerHTML = `
-                ${badgeHtml}
-                <h4>${item.name}</h4>
-                <div class="price-container">
-                    ${priceHtml}
-                </div>
-            `;
+                        ${badgeHtml}
+                        <h4>${item.name}</h4>
+                        <div class="price-container">
+                            ${priceHtml}
+                        </div>
+                    `;
 
             // Efek interaktif saat nominal diklik & update harga dinamis pembayaran
             card.addEventListener("click", () => {
-                document.querySelectorAll(".nominal-card").forEach((c) => c.classList.remove("selected"));
+                document
+                .querySelectorAll(".nominal-card")
+                .forEach((c) => c.classList.remove("selected"));
                 card.classList.add("selected");
 
                 const rawPrice = parsePrice(item.price);
@@ -132,7 +184,7 @@ if (gameKey && databaseGame[gameKey]) {
             });
 
             nominalGrid.appendChild(card);
-        });
+            });
     }
 } else {
     if (titleElement) {
@@ -162,6 +214,10 @@ if (btnCheckout) {
         alert("Harap masukkan User ID terlebih dahulu!");
         return;
         }
+        if (userIdFormat === "numeric" && !/^\d+$/.test(userId)) {
+        alert("ID akun hanya boleh berisi angka untuk game ini!");
+        return;
+        }
         if (!selectedNominal) {
         alert("Silakan pilih nominal top-up terlebih dahulu!");
         return;
@@ -181,15 +237,15 @@ if (btnCheckout) {
 
         const paymentMethod = selectedPayment.getAttribute("data-payment");
 
-        // Hitung total harga akhir (Harga Promo + Biaya Admin)
+        // Hitung total harga akhir (Harga Promo + Biaya Admin Dinamis)
         const basePrice = parsePrice(basePriceStr);
-        const fee = adminFees[paymentMethod] || 0;
+        const fee = calculateAdminFee(basePrice, paymentMethod);
         const finalPrice = basePrice + fee;
 
         alert(
         `✅ Pesanan Berhasil Dibuat!\n\n` +
             `User ID: ${userId}\n` +
-            `Item: ${itemName} (${formatRupiah(finalPrice)} incl. Admin)\n` +
+            `Item: ${itemName} (${formatRupiah(finalPrice)})\n` +
             `Pembayaran: ${paymentMethod}\n\n` +
             `Silakan lanjutkan pembayaran.`,
         );
