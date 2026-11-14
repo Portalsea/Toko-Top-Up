@@ -93,7 +93,7 @@ if (gameKey && databaseGame[gameKey]) {
             card.className = "nominal-card";
 
             let badgeHtml = "";
-            let priceHtml = `<p>${item.price}</p>`;
+            let priceHtml = `<p class="normal-price-text">${item.price}</p>`;
 
             // Cek jika item memiliki harga asli (sedang promo/diskon)
             if (item.originalPrice) {
