@@ -532,24 +532,50 @@ body {
 
 /* Responsif untuk layar HP */
 @media (max-width: 850px) {
-.detail-wrapper {
-        max-width: 100% !important;
-        margin: 15px auto !important;
-        padding: 0 15px !important; /* Membuat lebar dan jarak pinggirnya sejajar dengan header & footer */
-        grid-template-columns: 1fr;
+    .detail-wrapper {
+        display: flex;
+        flex-direction: column;
+        max-width: 100%;
+        margin: 20px auto;
+        padding: 10px 15px;
     }
-    
     .detail-sidebar {
         position: static;
     }
 
+    .detail-sidebar, 
+    .detail-content {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    .game-profile-card, .guide-box, .step-card {
+        padding: 15px;
+        width: 100%;
+        box-sizing: border-box;
+    }
     /* Munculkan tombol popup dan sembunyikan box panduan panjang di HP */
     .btn-guide-modal {
         display: flex;
     }
 
     .mobile-hide {
-        display: none !important;
+        display: none;
+    }
+
+    /* Ubah form input dari 2 kolom ke 1 kolom ke bawah di HP */
+    .input-row {
+        gap: 12px;
+    }
+
+    .input-field {
+        width: 100%;
+    }
+
+    .input-field input {
+        width: 100%;
+        box-sizing: border-box;
     }
 
     .nominal-grid {
