@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="420" viewBox="0 0 1200 420" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="420" x2="1200" y2="0" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#06151D"/>
+      <stop offset=".55" stop-color="#0D2937"/>
+      <stop offset="1" stop-color="#111C37"/>
+    </linearGradient>
+    <linearGradient id="controller" x1="844" y1="150" x2="1084" y2="300" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#183E51"/>
+      <stop offset="1" stop-color="#18243E"/>
+    </linearGradient>
+    <linearGradient id="bolt" x1="994" y1="104" x2="1077" y2="264" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#AFFBFF"/>
+      <stop offset=".45" stop-color="#39D8ED"/>
+      <stop offset="1" stop-color="#EA2264"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="975" cy="203" r="242" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0EA5E9" stop-opacity=".4"/>
+      <stop offset="1" stop-color="#0EA5E9" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="lines" width="38" height="38" patternUnits="userSpaceOnUse" patternTransform="skewX(-20)">
+      <path d="M0 0v38" stroke="#96F6FF" stroke-opacity=".07"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="420" rx="24" fill="url(#bg)"/>
+  <rect width="1200" height="420" rx="24" fill="url(#lines)"/>
+  <circle cx="975" cy="207" r="242" fill="url(#glow)"/>
+  <path d="M707 0h493v420H847L707 0Z" fill="#030A14" fill-opacity=".23"/>
+  <path d="m0 390 244-94 108 124H0v-30Z" fill="#0EA5E9" fill-opacity=".16"/>
+
+  <g font-family="Arial, Helvetica, sans-serif">
+    <rect x="72" y="74" width="205" height="32" rx="16" fill="#0EA5E9" fill-opacity=".16" stroke="#55E5F2" stroke-opacity=".5"/>
+    <circle cx="91" cy="90" r="4" fill="#69F1F8"/>
+    <text x="105" y="95" fill="#C5F5F7" font-size="12" font-weight="700" letter-spacing="2">NEXT LEVEL READY</text>
+    <text x="72" y="174" fill="#F2FAFC" font-size="54" font-weight="800" letter-spacing="-1">Isi Saldo.</text>
+    <text x="72" y="232" fill="#F2FAFC" font-size="54" font-weight="800" letter-spacing="-1">Lanjut Push Rank.</text>
+    <text x="74" y="273" fill="#A9C0CA" font-size="19">Siapkan kebutuhan game sebelum match berikutnya.</text>
+    <rect x="72" y="310" width="190" height="40" rx="20" fill="#0EA5E9"/>
+    <text x="167" y="336" fill="#FFFFFF" font-size="13" font-weight="700" letter-spacing="1.5" text-anchor="middle">SAATNYA MAIN</text>
+  </g>
+
+  <circle cx="974" cy="207" r="151" stroke="#5FE4F1" stroke-opacity=".2" stroke-width="1.5"/>
+  <circle cx="974" cy="207" r="123" stroke="#EA2264" stroke-opacity=".22" stroke-width="1.5" stroke-dasharray="3 9"/>
+  <g transform="rotate(-8 972 219)">
+    <path d="M850 183c5-29 28-48 54-48h135c27 0 49 19 54 48l19 105c5 28-26 46-48 28l-47-39H926l-48 39c-23 18-53 0-48-28l20-105Z" fill="url(#controller)" stroke="#8BE9F2" stroke-opacity=".55" stroke-width="2"/>
+    <path d="M893 211h66m-33-33v66" stroke="#DDFBFC" stroke-width="10" stroke-linecap="round"/>
+    <circle cx="1044" cy="194" r="10" fill="#EA2264"/>
+    <circle cx="1071" cy="220" r="10" fill="#62E9F2"/>
+    <circle cx="1018" cy="220" r="7" fill="#F9C76B"/>
+    <circle cx="1044" cy="246" r="7" fill="#A4F5FB"/>
+  </g>
+  <path d="m1009 74-65 115h45l-27 90 112-139h-51l39-66h-53Z" fill="url(#bolt)" stroke="#D8FCFF" stroke-opacity=".72" stroke-width="2" stroke-linejoin="round"/>
+  <path d="m1010 83-42 99h37l-9 49 65-82h-41l28-66h-38Z" fill="#E9FFFF" fill-opacity=".28"/>
+  <rect x="842" y="329" width="261" height="42" rx="21" fill="#0B1C2A" stroke="#83EAF3" stroke-opacity=".36"/>
+  <circle cx="866" cy="350" r="5" fill="#10B981"/>
+  <text x="881" y="355" fill="#D9F4F6" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="700" letter-spacing="1.3">PILIH GAME FAVORITMU</text>
+  <path d="m1112 112 6 13 13 6-13 6-6 13-6-13-13-6 13-6 6-13Z" fill="#F9C76B"/>
+</svg>

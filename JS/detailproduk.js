@@ -164,23 +164,39 @@ if (gameKey && databaseGame[gameKey]) {
                         `;
             }
 
+            card.setAttribute("role", "button");
+            card.setAttribute("tabindex", "0");
+            card.setAttribute("aria-pressed", "false");
             card.innerHTML = `
-                        ${badgeHtml}
-                        <h4>${item.name}</h4>
-                        <div class="price-container">
-                            ${priceHtml}
-                        </div>
-                    `;
+                ${badgeHtml}
+                <span class="nominal-icon" aria-hidden="true">◆</span>
+                <h4>${item.name}</h4>
+                <div class="price-container">
+                    ${priceHtml}
+                </div>
+                <span class="nominal-check" aria-hidden="true">✓</span>
+            `;
 
-            // Efek interaktif saat nominal diklik & update harga dinamis pembayaran
-            card.addEventListener("click", () => {
+            const selectCard = () => {
                 document
                 .querySelectorAll(".nominal-card")
-                .forEach((c) => c.classList.remove("selected"));
+                .forEach((c) => {
+                    c.classList.remove("selected");
+                    c.setAttribute("aria-pressed", "false");
+                });
                 card.classList.add("selected");
+                card.setAttribute("aria-pressed", "true");
 
                 const rawPrice = parsePrice(item.price);
                 updatePaymentPrices(rawPrice);
+            };
+
+            card.addEventListener("click", selectCard);
+            card.addEventListener("keydown", (event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    selectCard();
+                }
             });
 
             nominalGrid.appendChild(card);

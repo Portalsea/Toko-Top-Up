@@ -24,15 +24,21 @@
         <span class="material-symbols-outlined search">search</span>
     </header>
 
-    <section class="banner">
+    <section class="banner" role="region" aria-roledescription="carousel" aria-label="Promo YUDACYA">
         <div class="banner-box">
-            <img src="IMG/Banner/Banner.webp" alt="Banner Promo" class="banner-img">
+            <img src="IMG/Banner/banner-topup.svg" alt="Top up game tanpa ribet dengan YUDACYA" class="banner-img">
         </div>
 
-        <div class="progress-container">
-            <div class="progress-bar"><div class="progress-fill fill-1"></div></div>
-            <div class="progress-bar"><div class="progress-fill fill-2"></div></div>
-            <div class="progress-bar"><div class="progress-fill fill-3"></div></div>
+        <div class="progress-container" role="group" aria-label="Pilih banner promo">
+            <button class="progress-bar" type="button" aria-label="Tampilkan banner 1" aria-pressed="true">
+                <span class="progress-fill" aria-hidden="true"></span>
+            </button>
+            <button class="progress-bar" type="button" aria-label="Tampilkan banner 2" aria-pressed="false">
+                <span class="progress-fill" aria-hidden="true"></span>
+            </button>
+            <button class="progress-bar" type="button" aria-label="Tampilkan banner 3" aria-pressed="false">
+                <span class="progress-fill" aria-hidden="true"></span>
+            </button>
         </div>
     </section>
 
@@ -389,6 +395,7 @@
     </footer>
     
 
+    <script src="JS/banner.js" defer></script>
     <script type="module" src="JS/detailproduk.js"></script>
 </body>
 </html>
