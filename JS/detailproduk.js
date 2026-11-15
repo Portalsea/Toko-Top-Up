@@ -23,7 +23,32 @@ const userIdInput = document.getElementById("user-id");
 const serverIdContainer = document.getElementById("server-id-container");
 const serverIdLabel = document.getElementById("server-id-label");
 const serverIdInput = document.getElementById("server-id");
+const accountGuideTitle = document.getElementById("account-guide-title");
+const accountGuideDescription = document.getElementById("account-guide-desc");
+const accountGuideExample = document.getElementById("account-guide-example");
+const accountGuideNote = document.getElementById("account-guide-note");
+const accountStepTitle = document.getElementById("account-step-title");
+const nominalStepTitle = document.getElementById("nominal-step-title");
+const transactionGuideTitle = document.getElementById("transaction-guide-title");
+const transactionGuideSteps = document.getElementById("transaction-guide-steps");
+const modalGuideTitle = document.getElementById("modal-guide-title");
+const modalGuideSteps = document.getElementById("modal-guide-steps");
 let userIdFormat = "numeric";
+let serverIdFormat = "numeric";
+let serverIdRequired = false;
+let productType = "topup";
+
+function renderInstructionList(listElement, instructions) {
+    if (!listElement) return;
+
+    listElement.replaceChildren(
+        ...instructions.map((instruction) => {
+            const listItem = document.createElement("li");
+            listItem.textContent = instruction;
+            return listItem;
+        }),
+    );
+}
 
 // Helper: Mengubah string harga "Rp 15.000" menjadi angka murni
 function parsePrice(priceStr) {
@@ -39,12 +64,19 @@ function formatRupiah(number) {
 function configureIdInput(input, format = "numeric") {
     if (!input) return;
 
-    input.inputMode = format === "numeric" ? "numeric" : "text";
+    input.type = format === "email" ? "email" : "text";
+    input.inputMode =
+        format === "numeric" ? "numeric" : format === "email" ? "email" : "text";
     if (format !== "numeric") {
         input.removeAttribute("pattern");
+        if (format === "email") {
+            input.autocomplete = "email";
+            input.autocapitalize = "none";
+        }
         return;
     }
 
+    input.autocomplete = "off";
     input.pattern = "[0-9]*";
     input.addEventListener("input", (event) => {
         const target = event.currentTarget;
@@ -102,11 +134,26 @@ function updatePaymentPrices(basePrice) {
 // 4. Eksekusi perubahan data jika game ditemukan di database
 if (gameKey && databaseGame[gameKey]) {
     const data = databaseGame[gameKey];
+    productType = data.productType || "topup";
     userIdFormat = data.userIdFormat || "numeric";
 
     // Ubah teks judul & banner
-    if (titleElement) titleElement.innerText = `Top Up ${data.title}`;
+    if (titleElement) {
+        const titlePrefix = productType === "voucher" ? "Voucher" : "Top Up";
+        titleElement.innerText = `${titlePrefix} ${data.title}`;
+    }
     if (bannerImg && data.banner) bannerImg.src = data.banner;
+    if (accountStepTitle && productType === "voucher") {
+        accountStepTitle.textContent = "Masukkan Email Penerima";
+    }
+    if (nominalStepTitle) {
+        nominalStepTitle.textContent =
+            productType === "voucher"
+                ? "Pilih Nominal Voucher"
+                : gameKey === "garena-shell"
+                ? "Pilih Nominal Shell"
+                : "Pilih Nominal Top Up";
+    }
 
     // Ubah Label dan Placeholder User ID secara dinamis
     if (userIdLabel && data.userIdLabel) {
@@ -124,13 +171,65 @@ if (gameKey && databaseGame[gameKey]) {
     if (serverIdInput && data.serverIdPlaceholder) {
         serverIdInput.placeholder = data.serverIdPlaceholder;
     }
-    configureIdInput(serverIdInput, data.serverIdFormat || "numeric");
+    serverIdFormat = data.serverIdFormat || "numeric";
+    configureIdInput(serverIdInput, serverIdFormat);
+    serverIdRequired = Boolean(data.showServerId);
     if (serverIdContainer) {
         if (data.showServerId) {
             serverIdContainer.style.display = "flex";
         } else {
             serverIdContainer.style.display = "none";
         }
+    }
+    if (serverIdInput) {
+        serverIdInput.required = serverIdRequired;
+    }
+
+    if (data.accountGuide) {
+        if (accountGuideTitle) {
+            accountGuideTitle.textContent = data.accountGuide.title;
+        }
+        if (accountGuideDescription) {
+            accountGuideDescription.textContent = data.accountGuide.description;
+        }
+        if (accountGuideExample && data.accountGuide.example) {
+            accountGuideExample.textContent = `Contoh: ${data.accountGuide.example}`;
+            accountGuideExample.hidden = false;
+        }
+        if (accountGuideNote) {
+            accountGuideNote.textContent = data.accountGuide.note;
+        }
+    }
+
+    const instructions =
+        productType === "voucher"
+            ? [
+                "Pilih nominal voucher yang ingin dibeli.",
+                "Masukkan email aktif untuk menerima kode voucher.",
+                "Pilih metode pembayaran dan klik Beli Sekarang.",
+                "Selesaikan pembayaran, lalu periksa email untuk kode voucher.",
+                "Tukarkan kode pada layanan terkait dan pastikan region akun sesuai.",
+            ]
+            : gameKey === "garena-shell"
+            ? [
+                    "Masukkan User ID Garena yang akan menerima Shell.",
+                    "Pilih nominal Shell yang ingin dibeli.",
+                    "Pilih metode pembayaran.",
+                    "Klik Beli Sekarang dan selesaikan pembayaran.",
+                    "Shell akan dikirim langsung ke akun Garena tersebut.",
+                ]
+            : null;
+    if (instructions) {
+        if (transactionGuideTitle) {
+            transactionGuideTitle.textContent =
+                productType === "voucher" ? "Cara Beli Voucher:" : "Cara Top Up Garena Shell:";
+        }
+        if (modalGuideTitle) {
+            modalGuideTitle.textContent =
+                productType === "voucher" ? "Cara Beli Voucher" : "Cara Top Up Garena Shell";
+        }
+        renderInstructionList(transactionGuideSteps, instructions);
+        renderInstructionList(modalGuideSteps, instructions);
     }
 
   // Render pilihan nominal secara dinamis (DENGAN BADGE DISKON OTOMATIS)
@@ -140,13 +239,15 @@ if (gameKey && databaseGame[gameKey]) {
             const card = document.createElement("div");
             card.className = "nominal-card";
 
+            const formattedPrice = formatRupiah(parsePrice(item.price));
             let badgeHtml = "";
-            let priceHtml = `<p class="normal-price-text">${item.price}</p>`;
+            let priceHtml = `<p class="normal-price-text">${formattedPrice}</p>`;
 
         // Cek jika item memiliki harga asli (sedang promo/diskon)
             if (item.originalPrice) {
                 const origNum = parsePrice(item.originalPrice);
                 const promoNum = parsePrice(item.price);
+                const formattedOriginalPrice = formatRupiah(origNum);
 
                 // Hitung persentase diskon secara otomatis
                 let discountText = "PROMO";
@@ -159,8 +260,8 @@ if (gameKey && databaseGame[gameKey]) {
 
                 badgeHtml = `<span class="discount-badge">${discountText}</span>`;
                 priceHtml = `
-                            <span class="promo-price">${item.price}</span>
-                            <span class="original-price">${item.originalPrice}</span>
+                            <span class="promo-price">${formattedPrice}</span>
+                            <span class="original-price">${formattedOriginalPrice}</span>
                         `;
             }
 
@@ -227,15 +328,31 @@ if (btnCheckout) {
         const selectedPayment = document.querySelector(".payment-item.selected");
 
         if (!userId) {
-        alert("Harap masukkan User ID terlebih dahulu!");
+        alert(`Harap masukkan ${userIdLabel ? userIdLabel.innerText : "User ID"} terlebih dahulu!`);
+        return;
+        }
+        if (userIdFormat === "email" && !userIdInput.validity.valid) {
+        alert("Masukkan alamat email penerima yang valid!");
+        userIdInput.focus();
         return;
         }
         if (userIdFormat === "numeric" && !/^\d+$/.test(userId)) {
         alert("ID akun hanya boleh berisi angka untuk game ini!");
         return;
         }
+        const serverId = serverIdInput ? serverIdInput.value.trim() : "";
+        if (serverIdRequired && !serverId) {
+        alert(`Harap masukkan ${serverIdLabel.innerText} terlebih dahulu!`);
+        serverIdInput.focus();
+        return;
+        }
+        if (serverIdRequired && serverIdFormat === "numeric" && !/^\d+$/.test(serverId)) {
+        alert(`${serverIdLabel.innerText} hanya boleh berisi angka untuk game ini!`);
+        serverIdInput.focus();
+        return;
+        }
         if (!selectedNominal) {
-        alert("Silakan pilih nominal top-up terlebih dahulu!");
+        alert(`Silakan pilih nominal ${productType === "voucher" ? "voucher" : "top-up"} terlebih dahulu!`);
         return;
         }
         if (!selectedPayment) {
@@ -260,7 +377,7 @@ if (btnCheckout) {
 
         alert(
         `✅ Pesanan Berhasil Dibuat!\n\n` +
-            `User ID: ${userId}\n` +
+            `${userIdLabel ? userIdLabel.innerText : "User ID"}: ${userId}\n` +
             `Item: ${itemName} (${formatRupiah(finalPrice)})\n` +
             `Pembayaran: ${paymentMethod}\n\n` +
             `Silakan lanjutkan pembayaran.`,

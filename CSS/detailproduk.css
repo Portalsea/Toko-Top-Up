@@ -186,6 +186,7 @@ body {
 .account-guide-info .guide-title {
     color: var(--text-main);
     margin-bottom: 4px;
+    font-weight: 700;
 }
 
 .account-guide-info .guide-desc {

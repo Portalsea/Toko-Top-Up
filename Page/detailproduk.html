@@ -42,8 +42,8 @@
 
             <!-- Box Panduan Bawaan (Akan otomatis disembunyikan di HP via CSS) -->
             <div class="guide-box mobile-hide">
-                <h3>Cara Top Up:</h3>
-                <ol>
+                <h3 id="transaction-guide-title">Cara Top Up:</h3>
+                <ol id="transaction-guide-steps">
                     <li>Masukkan <strong>User ID</strong> dan <strong>Zone/Server ID</strong> akun game kamu dengan benar.</li>
                     <li>Pilih nominal item yang ingin dibeli.</li>
                     <li>Pilih metode pembayaran yang paling nyaman.</li>
@@ -60,7 +60,7 @@
             <section class="step-card">
                 <div class="step-header">
                     <span class="step-number">1</span>
-                    <h2>Masukkan Data Akun</h2>
+                    <h2 id="account-step-title">Masukkan Data Akun</h2>
                 </div>
                 
                 <div class="input-row">
@@ -77,15 +77,15 @@
 
                 <!-- Panduan Cek ID & Catatan Penting -->
                 <div class="account-guide-info">
-                    <p class="guide-title"><strong>Cara Cek User ID & Zone ID</strong></p>
-                    <p class="guide-desc">Buka game → klik <strong>Profile</strong> di kiri atas. User ID ada di bawah nama karakter kamu. Masukkan User ID dan Zone ID saat top up.</p>
-                    <p class="guide-example"><strong>Contoh:</strong> User ID 12345678 | Zone ID 1234</p>
+                    <p class="guide-title" id="account-guide-title">Cara cek data akun</p>
+                    <p class="guide-desc" id="account-guide-desc">Masukkan data akun sesuai informasi yang tertera di game.</p>
+                    <p class="guide-example" id="account-guide-example" hidden></p>
                     
                     <div class="important-notes">
                         <p><strong>PENTING:</strong></p>
                         <ul>
-                            <li>Hanya untuk region Indonesia</li>
-                            <li>Pastikan data akun sudah benar. Kesalahan input bukan tanggung jawab toko.</li>
+                            <li id="account-guide-note">Pastikan data akun dan region/server sudah sesuai sebelum melanjutkan.</li>
+                            <li>Periksa kembali data sebelum membuat pesanan agar item terkirim ke tujuan yang benar.</li>
                         </ul>
                     </div>
                 </div>
@@ -95,7 +95,7 @@
             <section class="step-card">
                 <div class="step-header">
                     <span class="step-number">2</span>
-                    <h2>Pilih Nominal Top Up</h2>
+                    <h2 id="nominal-step-title">Pilih Nominal Top Up</h2>
                 </div>
                 <div class="nominal-grid" id="nominal-grid"></div>
             </section>
@@ -117,7 +117,7 @@
                         </div>
                         <div class="category-body">
                             <div class="payment-item" data-payment="QRIS">
-                                <span class="pay-name">QRIS (Semua E-Wallet & M-Banking)</span>
+                                <span class="pay-name">QRIS (E-Wallet & Mobile Banking)</span>
                                 <span class="pay-tag">Otomatis</span>
                             </div>
                         </div>
@@ -143,7 +143,7 @@
                                 <span class="pay-tag">Instan</span>
                             </div>
                             <div class="payment-item" data-payment="ShopeePay">
-                                <span class="pay-name">ShopeePay / SPayLater</span>
+                                <span class="pay-name">ShopeePay</span>
                                 <span class="pay-tag">Instan</span>
                             </div>
                         </div>
@@ -175,10 +175,10 @@
                         </div>
                     </div>
 
-                    <!-- Kategori 4: Convenience Store -->
+                    <!-- Kategori 4: Minimarket -->
                     <div class="payment-category">
                         <div class="category-header" onclick="toggleCategory(this)">
-                            <span>Convenience Store</span>
+                            <span>Minimarket</span>
                             <span class="arrow">▼</span>
                         </div>
                         <div class="category-body">
@@ -216,11 +216,11 @@
     <div id="guide-modal" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>Cara Top Up</h3>
+                <h3 id="modal-guide-title">Cara Top Up</h3>
                 <button type="button" id="btn-close-modal" class="modal-close-btn">&times;</button>
             </div>
             <div class="modal-body">
-                <ol>
+                <ol id="modal-guide-steps">
                     <li>Pilih nominal layanan</li>
                     <li>Pilih metode pembayaran</li>
                     <li>Masukkan User ID dan Zone ID</li>
